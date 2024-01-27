@@ -17,8 +17,8 @@ if (!isset($_SESSION['myuser'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
 
-  <link rel="stylesheet" href="style111.css">
-  <link rel="stylesheet" href="style22.css">
+  <link rel="stylesheet" href="style1.css">
+  <link rel="stylesheet" href="style2.css">
 
 </head>
 <body>
@@ -890,7 +890,7 @@ else{
   
 </main>
  </div>
-  <script src="main11.js"></script>
+  <script src="main1.js"></script>
   <script>
     function checkdelete(){
         return confirm('Are you sure you want to delete this record?');
