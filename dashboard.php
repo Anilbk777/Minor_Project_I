@@ -36,25 +36,25 @@ if (!isset($_SESSION['myuser'])) {
         <ul>
           <li class="active">
             <a href="dashboard.php" aria-current="page" class="margin-top">
-              <img class="images" src="images/dashboard.png" alt="home">
+              <img class="images" src="images\dashboard.png" alt="home">
               <div class="title">Dashboard</div>
             </a>
           </li>
           <li>
             <a href="transaction.php" class="margin-top">
-              <img class="images" src="images/transaction.webp" alt="transaction">
+              <img class="images" src="images\transaction.webp" alt="transaction">
               <div class="title">Transactions</div>
             </a>
           </li>
           <li>
             <a href="charts.php" class="margin-top">
-              <img class="images" src="imageschart.png" alt="chart">
+              <img class="images" src="images\chart.png" alt="chart">
               <div class="title">Charts</div>
             </a>
           </li>
           <li>
             <a href="logout.php" class="margin-top open-button">
-              <img class="images open-button" src="images/logout.png" alt="logout">
+              <img class="images open-button" src="images\logout.png" alt="logout">
               <div class="title">Logout</div>
             </a>
           </li>
@@ -66,19 +66,19 @@ if (!isset($_SESSION['myuser'])) {
     <!-- =======================main========================================================================================================= -->
     <main class="main">
       <div  class="topbar">
-        <span class="menu"><img  src="images/menu.webp" alt="menu"></span>
+        <span class="menu"><img  src="images\menu.webp" alt="menu"></span>
         <div class="top-nav">
           <div id="dashboard">Dashboard</div>
           <div id="search">
             <form method="post">
             <label for="intext"><input class="intext" id="intext" name="search" placeholder = "Search for transaction"  type="text"  >
-            <img class="img-2"src="images/search.png" alt="search">
+            <img class="img-2"src="images\search.png" alt="search">
             </label>
             </form>
           </div>
           <div class="right">
-            <span id="bell"><img class="img-2" src="images/bell.png" alt="bell"></span>
-            <span id="user"><img class="img-2" src="images/user.png" alt="user"><div>Admin</div></span>
+            <span id="bell"><img class="img-2" src="images\bell.png" alt="bell"></span>
+            <span id="user"><img class="img-2" src="images\user.png" alt="user"><div>Admin</div></span>
           </div>
         </div>
       </div>
@@ -523,8 +523,8 @@ if(isset($_POST['search']) == 0){
                  <td>" . $expenseResult['descripition']."</td>
                  <td>" . $expenseResult['date'] . "</td>
                  <td>"."-$" . $expenseResult['amount'] . "</td>
-                 <td><a href='Eedit.php?id1=$expenseResult[id]'><img class='edit' src='images/edit.png' alt='edit'></a></td>
-                 <td><a href='delete.php?id1=$expenseResult[id]' onclick='return checkdelete()'><img class='delete redimg' src='images/delete.png' alt='delete'></a></td>
+                 <td><a href='Eedit.php?id1=$expenseResult[id]'><img class='edit' src='images\edit.png' alt='edit'></a></td>
+                 <td><a href='delete.php?id1=$expenseResult[id]' onclick='return checkdelete()'><img class='delete redimg' src='images\delete.png' alt='delete'></a></td>
                </tr>";
     }
 
@@ -618,8 +618,8 @@ if(isset($_POST['search']) == 0){
       <td>" . $incomeResult['descripition']."</td>
       <td>" . $incomeResult['date'] . "</td>
       <td>"."+$" . $incomeResult['amount'] . "</td>
-      <td><a href='edit1.php?id2=$incomeResult[ID]'><img class='edit' src='images/edit.png' alt='edit'></a></td>
-      <td><a href='delete.php?id2=$incomeResult[ID]' onclick='return checkdelete()'><img class='delete redimg' src='images/delete.png' alt='delete'></a></td>
+      <td><a href='edit1.php?id2=$incomeResult[ID]'><img class='edit' src='images\edit.png' alt='edit'></a></td>
+      <td><a href='delete.php?id2=$incomeResult[ID]' onclick='return checkdelete()'><img class='delete redimg' src='images\delete.png' alt='delete'></a></td>
       </tr>";
       
  }
@@ -718,8 +718,8 @@ else{
                  <td>" . $expenseResult2['descripition']."</td>
                  <td>" . $expenseResult2['date'] . "</td>
                  <td>"."-$" . $expenseResult2['amount'] . "</td>
-                 <td><a href='edit.php?id1=$expenseResult2[id]'><img class='edit' src='images/edit.png' alt='edit'></a></td>
-                 <td><a href='delete.php?id1=$expenseResult2[id]' onclick='return checkdelete()'><img class='delete redimg' src='images/delete.png' alt='delete'></a></td>
+                 <td><a href='edit.php?id1=$expenseResult2[id]'><img class='edit' src='images\edit.png' alt='edit'></a></td>
+                 <td><a href='delete.php?id1=$expenseResult2[id]' onclick='return checkdelete()'><img class='delete redimg' src='images\delete.png' alt='delete'></a></td>
                </tr>";
     }
   
@@ -822,8 +822,8 @@ else{
                  <td>" . $incomeResult3['descripition']."</td>
                  <td>" . $incomeResult3['date'] . "</td>
                  <td>"."-$" . $incomeResult3['amount'] . "</td>
-                 <td><a href='edit1.php?id2=$incomeResult3[ID]'><img class='edit' src='images/edit.png' alt='edit'></a></td>
-                 <td><a href='delete.php?id2=$incomeResult3[I3]' onclick='return checkdelete()'><img class='delete redimg' src='images/delete.png' alt='delete'></a></td>
+                 <td><a href='edit1.php?id2=$incomeResult3[ID]'><img class='edit' src='images\edit.png' alt='edit'></a></td>
+                 <td><a href='delete.php?id2=$incomeResult3[I3]' onclick='return checkdelete()'><img class='delete redimg' src='images\delete.png' alt='delete'></a></td>
                </tr>";
      }
   
