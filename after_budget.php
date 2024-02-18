@@ -1,54 +1,20 @@
-<?php include("connection.php");
+<?php
+include"connection.php";
 session_start();
 if (!isset($_SESSION['myuser'])) {
-  // Redirect to the login page if the user is not logged in
-  header("Location: doc.php");
-  exit();
-}
-
-
-?>
-
-
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SMART FINANCE</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-  <link rel="stylesheet" href="style/style1.css">
-  <link rel="stylesheet" href="style/style2.css">
-
-</head>
-
-<body>
-  <?php   
-require "dashboard1.php";
-?>
-  <!-- ==================================================================================================================== -->
-  <?php  
+    // Redirect to the login page if the user is not logged in
+    header("Location: doc.php");
+    exit();
+  }
   
-require"analytics.php";
-?>
 
-  <!--===================================================================================================================================== -->
-  <?php 
+  $userId = $_SESSION['myuser'];
 
-   // Assuming user_id is available in your session
-   $userId = $_SESSION['myuser'];
-
-   // Check if there's existing data for the user
-   $existingDataQuery = "SELECT * FROM budget WHERE user_IId = '$userId'";
-   $existingDataResult = mysqli_query($conn, $existingDataQuery);
-if (mysqli_num_rows($existingDataResult) == 0)  {
-   if(isset($_POST['search']) == 0){
+  // Check if there's existing data for the user
+  $existingDataQuery = "SELECT * FROM budget WHERE user_IId = '$userId'";
+  $existingDataResult = mysqli_query($conn, $existingDataQuery);
+if (mysqli_num_rows($existingDataResult) > 0) {
+    if(isset($_POST['search']) == 0){
         echo "  <div class='expense-container'>
             <div class='expense-table'>";
               
@@ -66,9 +32,20 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
   </thead>
   <tbody> ";
 
-  
+    // include"connection.php";
+    // session_start();
+    $user_id = $_SESSION['myuser'];
 
-    $expenseQuery = "SELECT * FROM expense WHERE user_id = $user_id ORDER BY id DESC ";
+    $d1_query = "SELECT start_date, end_date FROM budget WHERE user_IId = $user_id";        
+    $d1_result = mysqli_query($conn, $d_query);
+    
+
+    $row1 = mysqli_fetch_assoc($d1_result);
+    $start_date1 = $row['start_date'];
+    $end_date1 = $row['end_date'];
+    
+
+    $expenseQuery = "SELECT * FROM expense WHERE user_id = $user_id AND date BETWEEN '$start_date1' AND '$end_date1' ORDER BY id DESC";
     $expenseData = mysqli_query($conn, $expenseQuery);
 
     $expenseTotal = mysqli_num_rows($expenseData);
@@ -84,8 +61,7 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
 
     $offset = ($page-1) * $limit;
 
-    $query_limit = "SELECT * FROM expense WHERE user_id= $user_id ORDER BY id DESC LIMIT $offset,$limit ";
-    $result_limit = mysqli_query($conn, $query_limit);
+    $query_limit = "SELECT * FROM expense WHERE user_id = $user_id AND date BETWEEN '$start_date1' AND '$end_date1' ORDER BY id DESC LIMIT $offset, $limit";    $result_limit = mysqli_query($conn, $query_limit);
     
     while ($expenseResult = mysqli_fetch_assoc($result_limit)) {
         echo "<tr class='trow '>
@@ -139,7 +115,7 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
  echo"
  </div>
  </div> ";
-  // =================================================================================================================================== 
+  // ========================================================================================================= 
   echo "<div class='income-container'>
   <div class='income-table'>
     
@@ -156,9 +132,17 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
     </thead>
     <tbody>";
 
- 
+    $user_id = $_SESSION['myuser'];
 
-    $incomeQuery = "SELECT * FROM income WHERE user_Id = $user_id ORDER BY ID DESC  ";
+    $d1_query = "SELECT start_date, end_date FROM budget WHERE user_IId = $user_id";        
+    $d1_result = mysqli_query($conn, $d_query);
+    
+
+    $row1 = mysqli_fetch_assoc($d1_result);
+    $start_date1 = $row['start_date'];
+    $end_date1 = $row['end_date'];
+
+    $incomeQuery = "SELECT * FROM income WHERE user_Id = $user_id AND date BETWEEN '$start_date1' AND '$end_date1' ORDER BY id DESC";
     $incomeData = mysqli_query($conn, $incomeQuery);
     
     $incomeTotal = mysqli_num_rows($incomeData);
@@ -175,7 +159,7 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
     
     $offset1 = ($page1-1) * $limit1;
 
-    $query_limit1 = "SELECT * FROM income WHERE user_Id = $user_id ORDER BY ID DESC LIMIT $offset1,$limit1";
+    $query_limit1 = "SELECT * FROM income WHERE user_Id = $user_id AND date BETWEEN '$start_date1' AND '$end_date1' ORDER BY id DESC";
     $result_limit1 = mysqli_query($conn, $query_limit1);
     
     while ($incomeResult = mysqli_fetch_assoc($result_limit1)) {
@@ -241,8 +225,17 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
 
   else{
   $search = $_POST['search'];
+  $user_id = $_SESSION['myuser'];
 
-  if($sql = "SELECT * FROM expense WHERE category='$search' OR date = '$search'  "){
+  $d1_query = "SELECT start_date, end_date FROM budget WHERE user_IId = $user_id";        
+  $d1_result = mysqli_query($conn, $d_query);
+  
+
+  $row1 = mysqli_fetch_assoc($d1_result);
+  $start_date1 = $row['start_date'];
+  $end_date1 = $row['end_date'];
+
+  if($sql = "SELECT * FROM expense WHERE category='$search' OR date = '$search' AND date BETWEEN '$start_date1' AND '$end_date1'"){
     // echo "Search";
     $result = mysqli_query($conn,$sql); 
     
@@ -277,7 +270,7 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
   
     $offset2 = ($page2-1) * $limit2;
   
-    $query_limit2 = "SELECT * FROM expense WHERE category='$search'OR date = '$search' ORDER BY id DESC LIMIT $offset2,$limit2";
+    $query_limit2 = "SELECT * FROM expense WHERE category='$search' OR date = '$search' AND date BETWEEN '$start_date1' AND '$end_date1' ORDER BY id DESC LIMIT $offset2,$limit2";
     $result_limit2 = mysqli_query($conn, $query_limit2);
     
     while ($expenseResult2 = mysqli_fetch_assoc($result_limit2)) {
@@ -348,8 +341,8 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
   
   }
        
-  // ===============================================================================================================================
-  if($sql3 = "SELECT * FROM income WHERE category='$search' OR date = '$search' "){
+  // ========================================================================================================
+  if($sql3 = "SELECT * FROM income WHERE category='$search' OR date = '$search' AND date BETWEEN '$start_date1' AND '$end_date1' "){
     $result3 = mysqli_query($conn,$sql3); 
     
     echo "<div class='income-container'>
@@ -382,7 +375,7 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
   
           $offset3 = ($page3-1) * $limit3;
   
-           $query_limit3 = "SELECT * FROM income WHERE category='$search' OR date = '$search' ORDER BY ID DESC LIMIT $offset3,$limit3";
+           $query_limit3 = "SELECT * FROM income WHERE category='$search' OR date = '$search' AND date BETWEEN '$start_date1' AND '$end_date1' ORDER BY ID DESC LIMIT $offset3,$limit3";
            $result_limit3 = mysqli_query($conn, $query_limit3);
     
             while ($incomeResult3 = mysqli_fetch_assoc($result_limit3)) {
@@ -437,7 +430,6 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
   
       else{
         echo "<tr colspan='5'><td>Transaction Not Found</td></tr>
-
         
         ";
         
@@ -451,33 +443,8 @@ if (mysqli_num_rows($existingDataResult) == 0)  {
         
         }
 
- }
-
+    }
 }
 
-include"after_budget.php";
-?>
 
-
-
-  </main>
-  </div>
-
-  <script src="main1.js"></script>
-
-  <script>
-    function checkdelete() {
-      return confirm('Are you sure you want to delete this record?');
-    }
-  </script>
-
-</body>
-
-</html>
-
-
-
-
-<?php 
-mysqli_close($conn);
 ?>
