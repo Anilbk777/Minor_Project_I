@@ -1,9 +1,8 @@
 <?php include("connection.php");
 session_start();
 if (!isset($_SESSION['myuser'])) {
-  // Redirect to the login page if the user is not logged in
-  header("Location: doc.php");
-  exit();
+    header("Location: doc.php");
+    exit();
 }
 
 ?>
@@ -15,13 +14,11 @@ if (!isset($_SESSION['myuser'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMART FINANCE</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-        <link rel="stylesheet" href="style/style1.css">
-  <link rel="stylesheet" href="style/style2.css">
+    <link rel="stylesheet" href="style/style1.css">
+    <link rel="stylesheet" href="style/style2.css">
 
 
 </head>
@@ -39,8 +36,8 @@ if (!isset($_SESSION['myuser'])) {
             <!-- ===================================================================================================== -->
             <div class="box1">
                 <ul>
-                    <li >
-                        <a href="dashboard.php"  class="margin-top">
+                    <li>
+                        <a href="dashboard.php" class="margin-top">
                             <img class="images" src="images/dashboard.png" alt="home">
                             <div class="title">Dashboard</div>
                         </a>
@@ -64,9 +61,9 @@ if (!isset($_SESSION['myuser'])) {
                         </a>
                     </li>
                     <li>
-                        <a href="logout.php" class="margin-top open-button">
-                            <img class="images open-button" src="images/logout.png" alt="logout">
-                            <div class="title">Logout</div>
+                        <a href="report.php" class="margin-top open-button">
+                            <img class="images bg-color" src="images/report.png" alt="report">
+                            <div class="title">Report</div>
                         </a>
                     </li>
 
@@ -79,8 +76,8 @@ if (!isset($_SESSION['myuser'])) {
 
 
         <main class="main">
-   
-<!-- ------------------------------------------------------------------------------------------------------------------------------ -->
+
+            <!-- ------------------------------------------------------------------------------------------------------------------------------ -->
             <div class="modal" id="budgetModal">
                 <h2> Budget</h2>
                 <!-- <button class="close-button" onclick="closeModal()">&times;</button> -->
@@ -97,11 +94,19 @@ if (!isset($_SESSION['myuser'])) {
                         <option value="year">year</option>
                     </select>
 
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate" name="startDate">
+                    <!-- <label for="startDate">Start Date:</label>
+                    <input type="date" id="t-date" name="startDate">
 
                     <label for="endDate">End Date:</label>
-                    <input type="date" id="endDate" name="endDate">
+                    <input type="date" id="endDate" name="endDate"> -->
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate" max="<?php echo date('Y-m-d'); ?>">
+
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="endDate" min="<?php echo date('Y-m-d'); ?>">
+
+
+
 
                     <div class="btn">
                         <button type="submit" name="set-budget">Set Budget</button>
@@ -115,58 +120,53 @@ if (!isset($_SESSION['myuser'])) {
     </div>
 
 
-<?php
-if (isset($_POST['set-budget'])) {
-    // Retrieve form data
-    $budgetAmount = $_POST['amount'];
-    $allocation = $_POST['allocation'];
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate'];
+    <?php
+    if (isset($_POST['set-budget'])) {
+        $budgetAmount = $_POST['amount'];
+        $allocation = $_POST['allocation'];
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
 
-    // Assuming user_id is available in your session
-    $userId = $_SESSION['myuser'];
+        $userId = $_SESSION['myuser'];
 
-    // Check if there's existing data for the user
-    $existingDataQuery = "SELECT * FROM budget WHERE user_IId = '$userId'";
-    $existingDataResult = mysqli_query($conn, $existingDataQuery);
+        $existingDataQuery = "SELECT * FROM budget WHERE user_IId = '$userId'";
+        $existingDataResult = mysqli_query($conn, $existingDataQuery);
 
-    if (mysqli_num_rows($existingDataResult) > 0) {
-        // Update existing data
-        $updateQuery = "UPDATE budget SET 
+        if (mysqli_num_rows($existingDataResult) > 0) {
+            $updateQuery = "UPDATE budget SET 
                         budget_amount = '$budgetAmount', 
                         allocation = '$allocation', 
                         start_date = '$startDate', 
                         end_date = '$endDate' 
                         WHERE user_IId = '$userId'";
 
-        if (mysqli_query($conn, $updateQuery)) {
-            echo "<script>alert('Budget updated successfully.')</script>";
+            if (mysqli_query($conn, $updateQuery)) {
+                echo "<script>alert('Budget updated successfully.')</script>";
+            } else {
+                echo "<script>alert('Error updating budget: " . mysqli_error($conn) . "');</script>";
+            }
         } else {
-            echo "<script>alert('Error updating budget: " . mysqli_error($conn) . "');</script>";
-        }
-    } else {
-        // Insert new data
-        $insertQuery = "INSERT INTO budget (budget_amount, allocation, start_date, end_date, user_IId)
+            $insertQuery = "INSERT INTO budget (budget_amount, allocation, start_date, end_date, user_IId)
                         VALUES ('$budgetAmount', '$allocation', '$startDate', '$endDate', '$userId')";
 
-        if (mysqli_query($conn, $insertQuery)) {
-            echo "<script>alert('Budget set successfully.')</script>";
-        } else {
-            echo "<script>alert('Error setting budget: " . mysqli_error($conn) . "');</script>";
+            if (mysqli_query($conn, $insertQuery)) {
+                echo "<script>alert('Budget set successfully.')</script>";
+            } else {
+                echo "<script>alert('Error setting budget: " . mysqli_error($conn) . "');</script>";
+            }
         }
+
+        echo "<meta http-equiv='refresh' content='0;url=dashboard.php'>";
     }
+    ?>
+    <?php
+    $_SESSION['budgetAmount'] = $_POST['amount'];
+    $_SESSION['allocation'] = $_POST['allocation'];
+    $_SESSION['startDate'] = $_POST['startDate'];
+    $_SESSION['endDate'] = $_POST['endDate']; ?>
 
-    // Redirect to dashboard after processing
-    echo "<meta http-equiv='refresh' content='0;url=dashboard.php'>";
-}
-?>
-<?php
-$_SESSION['budgetAmount'] = $_POST['amount'];
-$_SESSION['allocation'] = $_POST['allocation'];
-$_SESSION['startDate'] = $_POST['startDate'];
-$_SESSION['endDate'] = $_POST['endDate'];?>
+    <script src="main1.js"></script>
 
-  <script src="main1.js"></script>
+</body>
 
-    </body>
-    </html>
+</html>
